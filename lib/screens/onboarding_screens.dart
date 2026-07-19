@@ -281,15 +281,6 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
                             ),
                           ),
                           onPressed: () {
-                            if (!_agreedToTerms) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Please agree to the Terms & Privacy Policy first"),
-                                  backgroundColor: AppColors.primary,
-                                ),
-                              );
-                              return;
-                            }
                             appState.loginWithGoogle();
                             Navigator.pop(context);
                           },
@@ -316,15 +307,6 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
                           _buildSocialIcon(
                             icon: Icons.g_mobiledata_rounded,
                             onTap: () {
-                              if (!_agreedToTerms) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Please agree to the Terms & Privacy Policy first"),
-                                    backgroundColor: AppColors.primary,
-                                  ),
-                                );
-                                return;
-                              }
                               appState.loginWithGoogle();
                               Navigator.pop(context);
                             },
@@ -333,15 +315,6 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
                           _buildSocialIcon(
                             icon: Icons.apple,
                             onTap: () {
-                              if (!_agreedToTerms) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Please agree to the Terms & Privacy Policy first"),
-                                    backgroundColor: AppColors.primary,
-                                  ),
-                                );
-                                return;
-                              }
                               appState.loginWithGoogle();
                               Navigator.pop(context);
                             },
@@ -350,15 +323,6 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
                           _buildSocialIcon(
                             icon: Icons.mail_outline_rounded,
                             onTap: () {
-                              if (!_agreedToTerms) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Please agree to the Terms & Privacy Policy first"),
-                                    backgroundColor: AppColors.primary,
-                                  ),
-                                );
-                                return;
-                              }
                               appState.loginWithGoogle();
                               Navigator.pop(context);
                             },
@@ -369,59 +333,7 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
                   ),
                 ),
                 const Spacer(flex: 1),
-                // Rules & checkboxes with enhanced contrast text
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Theme(
-                            data: Theme.of(context).copyWith(
-                              unselectedWidgetColor: Colors.white,
-                            ),
-                            child: Checkbox(
-                              value: _agreedToTerms,
-                              onChanged: (val) {
-                                setState(() {
-                                    _agreedToTerms = val ?? false;
-                                });
-                              },
-                              activeColor: Colors.white,
-                              checkColor: const Color(0xFF0F172A),
-                            ),
-                          ),
-                          const Expanded(
-                            child: Text(
-                              "I agree to the Terms of Service & Privacy Policy",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
-                                shadows: [
-                                  Shadow(color: Colors.black45, offset: Offset(0, 1), blurRadius: 4),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        "By using Numi you agree to Numi's\nPrivacy Policy & Terms of Service",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                const SizedBox(height: 20),
               ],
             ),
           ),

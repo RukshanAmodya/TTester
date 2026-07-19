@@ -36,33 +36,60 @@ class _EarnCoinsScreenState extends State<EarnCoinsScreen> {
             "Tester Panel",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20),
           ),
-          bottom: TabBar(
-            labelColor: AppColors.primary,
-            unselectedLabelColor: AppColors.textLight,
-            indicatorColor: AppColors.primary,
-            indicatorWeight: 3,
-            tabs: [
-              Tab(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.apps_rounded, size: 18),
-                    const SizedBox(width: 8),
-                    Text("Available (${available.length})"),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(60),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF1F5F9), // Slate grey track
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: TabBar(
+                labelColor: Colors.white,
+                unselectedLabelColor: AppColors.textLight,
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: Colors.transparent,
+                indicator: BoxDecoration(
+                  color: AppColors.buttonDark, // Dark active tab slide
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
                   ],
                 ),
+                tabs: [
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.apps_rounded, size: 16),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Available (${available.length})",
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.verified_rounded, size: 16),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Testing (${testing.length})",
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              Tab(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.verified_rounded, size: 18),
-                    const SizedBox(width: 8),
-                    Text("Testing (${testing.length})"),
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
         ),
         body: TabBarView(

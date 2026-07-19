@@ -234,32 +234,46 @@ class DashboardScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        "Current Streak: ${appState.dailyStreak} / 14 Days",
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Streak Goal Status",
+                            style: TextStyle(fontSize: 12, color: AppColors.textLight, fontWeight: FontWeight.w500),
                           ),
-                        ),
-                        onPressed: () {
-                          final success = appState.checkInDaily();
-                          if (success) {
-                            PremiumToast.show(context, "Check-in successful! +5 Coins");
-                          } else {
-                            PremiumToast.show(context, "You already checked in today!", isWarning: true);
-                          }
-                        },
-                        child: const Text(
-                          "Verify Attendance",
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          Text(
+                            "${appState.dailyStreak} / 14 Days",
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.primary),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.buttonDark,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          onPressed: () {
+                            final success = appState.checkInDaily();
+                            if (success) {
+                              PremiumToast.show(context, "Check-in successful! +5 Coins");
+                            } else {
+                              PremiumToast.show(context, "You already checked in today!", isWarning: true);
+                            }
+                          },
+                          child: const Text(
+                            "Verify & Check-in Today",
+                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ],

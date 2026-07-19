@@ -158,10 +158,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             curve: Curves.easeInOut,
                           );
                         } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const NumiLoginScreen()),
-                          );
+                          appState.completeOnboarding();
                         }
                       },
                       child: Text(

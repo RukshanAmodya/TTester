@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TesterProgress {
   final String testerName;
@@ -76,6 +77,7 @@ class AppState extends ChangeNotifier {
   String _userName = "Guest User";
   String _userEmail = "";
   int _coins = 0;
+  bool _hasSeenOnboarding = false;
   
   // Daily Streak
   int _dailyStreak = 0;
@@ -94,6 +96,14 @@ class AppState extends ChangeNotifier {
   List<bool> get attendanceList => _attendanceList;
   List<AppModel> get allApps => _allApps;
   List<CoinTransaction> get transactions => _transactions;
+  bool get hasSeenOnboarding => _hasSeenOnboarding;
+
+  Future<void> completeOnboarding() async {
+    _hasSeenOnboarding = true;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('has_seen_onboarding', true);
+    notifyListeners();
+  }
 
   // Filter lists
   List<AppModel> get availableApps => _allApps
@@ -112,8 +122,14 @@ class AppState extends ChangeNotifier {
     _loadInitialData();
   }
 
-  void _loadInitialData() {
+  void _loadInitialData() async {
     // Populate with some dummy apps
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      _hasSeenOnboarding = prefs.getBool('has_seen_onboarding') ?? false;
+      notifyListeners();
+    } catch (_) {}
+
     _allApps.addAll([
       AppModel(
         id: "1",

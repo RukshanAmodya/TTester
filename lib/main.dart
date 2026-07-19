@@ -38,7 +38,11 @@ class AuthWrapper extends StatelessWidget {
     if (appState.isLoggedIn) {
       return const MainNavigation();
     } else {
-      return const OnboardingScreen();
+      if (appState.hasSeenOnboarding) {
+        return const NumiLoginScreen();
+      } else {
+        return const OnboardingScreen();
+      }
     }
   }
 }

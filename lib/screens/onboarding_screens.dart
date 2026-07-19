@@ -12,142 +12,229 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
-  int _currentPage = 0;
-
-  final List<Map<String, String>> _slides = [
-    {
-      "title": "Welcome to TTesters",
-      "subtitle": "Indie developer community helping each other pass the Play Store 14-day closed testing rule.",
-      "image": "🚀",
-    },
-    {
-      "title": "Mutual App Testing",
-      "subtitle": "Test apps from peers to earn coins, and spend coins to get 12 testers for your own apps.",
-      "image": "🪙",
-    },
-    {
-      "title": "Anti-Cheat Protection",
-      "subtitle": "Automated background package checks ensure testers remain engaged, keeping your metrics clean.",
-      "image": "🛡️",
-    }
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.appBackground,
-      body: SafeArea(
+      body: PageView(
+        controller: _pageController,
+        children: [
+          // Slide 1: Financial Picture (Forecast/Intro Screen)
+          NumiIntroScreen(
+            onContinue: () {
+              _pageController.nextPage(
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeInOut,
+              );
+            },
+          ),
+          // Slide 2: Welcome / Sign Up Screen
+          const NumiSignUpScreen(),
+        ],
+      ),
+    );
+  }
+}
+
+// First screen: Intro Screen with Chart Card
+class NumiIntroScreen extends StatelessWidget {
+  final VoidCallback onContinue;
+  const NumiIntroScreen({super.key, required this.onContinue});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFFBCE3FF), // Soft sky blue
+            Color(0xFFE8F5FF), // Light gradient blue
+            Color(0xFFFFFFFF), // White
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: [0.0, 0.4, 0.7],
+        ),
+      ),
+      child: SafeArea(
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                onPressed: () {
-                  _pageController.jumpToPage(_slides.length);
-                },
-                child: const Text(
-                  "Skip",
-                  style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+            const Spacer(flex: 2),
+            // Floating Net Worth Card with Chart
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.06),
+                      blurRadius: 30,
+                      offset: const Offset(0, 15),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: (int page) {
-                  setState(() {
-                    _currentPage = page;
-                  });
-                },
-                itemCount: _slides.length + 1, // +1 for the Sign-In page
-                itemBuilder: (context, index) {
-                  if (index == _slides.length) {
-                    return const LoginScreen();
-                  }
-
-                  final slide = _slides[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          width: 200,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 20,
-                                spreadRadius: 5,
-                              )
-                            ],
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            slide["image"]!,
-                            style: const TextStyle(fontSize: 80),
+                        Text(
+                          "NET WORTH  ›",
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade400,
+                            letterSpacing: 1.2,
                           ),
                         ),
-                        const SizedBox(height: 48),
-                        Text(
-                          slide["title"]!,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 28),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          slide["subtitle"]!,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
-                          textAlign: TextAlign.center,
+                        Icon(
+                          Icons.more_horiz_rounded,
+                          color: Colors.grey.shade400,
+                          size: 20,
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
-            ),
-            if (_currentPage < _slides.length) ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  _slides.length + 1,
-                  (index) => Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: _currentPage == index ? 24 : 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: _currentPage == index ? AppColors.primary : Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(4),
+                    const SizedBox(height: 8),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "\$210,150",
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF1E293B),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFECFDF5),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Text(
+                            "+5.5%",
+                            style: TextStyle(
+                              color: Color(0xFF059669),
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            border: Border.all(color: Colors.grey.shade200),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text(
+                            "Forecast  ›",
+                            style: TextStyle(
+                              color: Color(0xFF64748B),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 32),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.buttonDark,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                    const SizedBox(height: 24),
+                    // Line Chart Painter
+                    SizedBox(
+                      height: 80,
+                      width: double.infinity,
+                      child: CustomPaint(
+                        painter: NetWorthChartPainter(),
                       ),
                     ),
-                    onPressed: () {
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeIn,
-                      );
-                    },
-                    child: const Text("Next"),
+                  ],
+                ),
+              ),
+            ),
+            const Spacer(flex: 3),
+            // Text Content
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 36.0),
+              child: Column(
+                children: [
+                  const Text(
+                    "Your full financial\npicture, at a glance",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28,
+                      height: 1.25,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0F172A),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Assets, liabilities, and trends over time.\nWatch your net worth grow or at least\nunderstand why it isn't.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      height: 1.5,
+                      color: Colors.grey.shade500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            // Indicators
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF0F172A),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(flex: 1),
+            // Continue Button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF09090B), // Black
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onPressed: onContinue,
+                  child: const Text(
+                    "Continue",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
               ),
-            ],
+            ),
           ],
         ),
       ),
@@ -155,140 +242,299 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+// Second screen: Sign-up / Login Page
+class NumiSignUpScreen extends StatefulWidget {
+  const NumiSignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<NumiSignUpScreen> createState() => _NumiSignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  bool _agreeToTerms = false;
+class _NumiSignUpScreenState extends State<NumiSignUpScreen> {
+  bool _agreedToTerms = false;
 
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context, listen: false);
 
-    return Scaffold(
-      backgroundColor: AppColors.appBackground,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Logo Header with orange peach gradient
-              Container(
-                width: 100,
-                height: 100,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: AppColors.orangeGradient,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/numi_cloud.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          children: [
+            const Spacer(flex: 1),
+            // Logo numi
+            Column(
+              children: [
+                const Text(
+                  "nūmi",
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    letterSpacing: -1,
                   ),
-                  shape: BoxShape.circle,
                 ),
-                alignment: Alignment.center,
-                child: const Icon(
-                  Icons.verified_user_rounded,
-                  color: Colors.white,
-                  size: 50,
+                Container(
+                  width: 70,
+                  height: 2,
+                  color: Colors.white70,
                 ),
-              ),
-              const SizedBox(height: 32),
-              Text(
-                "Let's Get Testing",
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 32),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                "P2P Network for Google Play 14-Day closed testing requirements.",
+              ],
+            ),
+            const Spacer(flex: 3),
+            // Text Header
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32.0),
+              child: Text(
+                "Track smarter.\nPlan calmer.",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.textLight, fontSize: 14),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
+                ),
               ),
-              const SizedBox(height: 64),
-              // Terms & Privacy Checkbox
-              Row(
+            ),
+            const Spacer(flex: 2),
+            // Buttons Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
                 children: [
-                  Checkbox(
-                    value: _agreeToTerms,
-                    onChanged: (val) {
-                      setState(() {
-                        _agreeToTerms = val ?? false;
-                      });
-                    },
-                    activeColor: AppColors.primary,
+                  // Sign-up button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF0F172A),
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (!_agreedToTerms) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Please agree to the Terms & Privacy Policy first"),
+                              backgroundColor: AppColors.primary,
+                            ),
+                          );
+                          return;
+                        }
+                        appState.loginWithGoogle();
+                      },
+                      child: const Text(
+                        "Sign up",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
                   ),
-                  const Expanded(
-                    child: Text(
-                      "I agree to the Terms of Service & Privacy Policy",
-                      style: TextStyle(fontSize: 12, color: AppColors.textDark),
+                  const SizedBox(height: 20),
+                  // OR text
+                  const Text(
+                    "OR",
+                    style: TextStyle(
+                      color: Colors.white60,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Social Row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildSocialIcon(
+                        icon: Icons.g_mobiledata_rounded,
+                        onTap: () {
+                          if (!_agreedToTerms) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Please agree to the Terms & Privacy Policy first"),
+                                backgroundColor: AppColors.primary,
+                              ),
+                            );
+                            return;
+                          }
+                          appState.loginWithGoogle();
+                        },
+                      ),
+                      const SizedBox(width: 20),
+                      _buildSocialIcon(
+                        icon: Icons.apple,
+                        onTap: () {
+                          if (!_agreedToTerms) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Please agree to the Terms & Privacy Policy first"),
+                                backgroundColor: AppColors.primary,
+                              ),
+                            );
+                            return;
+                          }
+                          appState.loginWithGoogle();
+                        },
+                      ),
+                      const SizedBox(width: 20),
+                      _buildSocialIcon(
+                        icon: Icons.mail_outline_rounded,
+                        onTap: () {
+                          if (!_agreedToTerms) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Please agree to the Terms & Privacy Policy first"),
+                                backgroundColor: AppColors.primary,
+                              ),
+                            );
+                            return;
+                          }
+                          appState.loginWithGoogle();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(flex: 1),
+            // Agree checkbox & terms links
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Theme(
+                        data: Theme.of(context).copyWith(
+                          unselectedWidgetColor: Colors.white70,
+                        ),
+                        child: Checkbox(
+                          value: _agreedToTerms,
+                          onChanged: (val) {
+                            setState(() {
+                              _agreedToTerms = val ?? false;
+                            });
+                          },
+                          activeColor: Colors.white,
+                          checkColor: const Color(0xFF0F172A),
+                        ),
+                      ),
+                      const Expanded(
+                        child: Text(
+                          "I agree to the Terms of Service & Privacy Policy",
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "By using Numi you agree to Numi's\nPrivacy Policy & Terms of Service",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white60,
+                      fontSize: 11,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white60,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
-              // Google Login Button
-              SizedBox(
-                width: double.infinity,
-                child: InkWell(
-                  onTap: () {
-                    if (!_agreeToTerms) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Please agree to the Terms and Conditions first"),
-                          backgroundColor: AppColors.primary,
-                        ),
-                      );
-                      return;
-                    }
-                    appState.loginWithGoogle();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.grey.shade300, width: 1),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(
-                          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png',
-                          height: 24,
-                          errorBuilder: (context, error, stackTrace) => const Icon(
-                            Icons.g_mobiledata_rounded,
-                            size: 32,
-                            color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        const Text(
-                          "Sign In with Google",
-                          style: TextStyle(
-                            color: AppColors.textDark,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
+
+  Widget _buildSocialIcon({required IconData icon, required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 56,
+        height: 56,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.12),
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white24, width: 1),
+        ),
+        alignment: Alignment.center,
+        child: Icon(
+          icon,
+          color: Colors.white,
+          size: 28,
+        ),
+      ),
+    );
+  }
+}
+
+// Chart painter drawing a smooth green line chart
+class NetWorthChartPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = const Color(0xFF10B981) // Green
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5
+      ..strokeCap = StrokeCap.round;
+
+    final path = Path();
+    
+    // Draw a smooth line chart corresponding to the mockup curve
+    path.moveTo(0, size.height * 0.75);
+    path.cubicTo(
+      size.width * 0.2, size.height * 0.75,
+      size.width * 0.25, size.height * 0.45,
+      size.width * 0.4, size.height * 0.50,
+    );
+    path.cubicTo(
+      size.width * 0.5, size.height * 0.55,
+      size.width * 0.55, size.height * 0.2,
+      size.width * 0.7, size.height * 0.25,
+    );
+    path.cubicTo(
+      size.width * 0.8, size.height * 0.3,
+      size.width * 0.9, 0,
+      size.width, size.height * 0.05,
+    );
+
+    // Draw background gradient under chart
+    final fillPath = Path.from(path)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+
+    final gradient = LinearGradient(
+      colors: [
+        const Color(0xFF10B981).withOpacity(0.2),
+        const Color(0xFF10B981).withOpacity(0.0),
+      ],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    );
+
+    final fillPaint = Paint()
+      ..shader = gradient.createShader(Rect.fromLTWH(0, 0, size.width, size.height))
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPath(fillPath, fillPaint);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

@@ -72,7 +72,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           SafeArea(
             child: Column(
               children: [
-                const Spacer(flex: 7),
+                const Spacer(flex: 4),
                 // Text sliding layer
                 Expanded(
                   flex: 3,
@@ -94,11 +94,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             Text(
                               slide["title"]!,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 28,
-                                height: 1.25,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                              style: GoogleFonts.libreBaskerville(
+                                textStyle: const TextStyle(
+                                  fontSize: 28,
+                                  height: 1.25,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                             const SizedBox(height: 16),

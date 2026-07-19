@@ -3,25 +3,26 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
   // Gradients
-  static const List<Color> orangeGradient = [
-    Color(0xFFFF9E7A), // Peach orange
-    Color(0xFFFF6347), // Soft tomato red/orange
+  static const List<Color> primaryGradient = [
+    Color(0xFF2563EB), // Premium Blue
+    Color(0xFF10B981), // Premium Green
   ];
 
   static const List<Color> cardGradient = [
-    Color(0xFFFFF2EC), // Very soft warm orange-white
+    Color(0xFFEFF6FF), // Soft Blue tint
     Color(0xFFFFFFFF), // White
   ];
 
-  static const Color primary = Color(0xFFFF7A50);
-  static const Color secondary = Color(0xFFFF9E7A);
-  static const Color background = Color(0xFFA1A3A6); // The background color of the canvas in the mockup
-  static const Color appBackground = Color(0xFFF6F8FA); // Soft background of the phone screen
+  static const Color primary = Color(0xFF2563EB); // Blue
+  static const Color secondary = Color(0xFF10B981); // Green
+  static const Color background = Color(0xFFA1A3A6); 
+  static const Color appBackground = Color(0xFFF8FAFC); // Clean slate bg
   static const Color cardBg = Colors.white;
-  static const Color textDark = Color(0xFF2C3E50);
-  static const Color textLight = Color(0xFF7F8C8D);
-  static const Color accentOrange = Color(0xFFFFF0EB);
-  static const Color buttonDark = Color(0xFF2B2D31); // Dark neumorphic/matte button color in mockup
+  static const Color textDark = Color(0xFF0F172A); // Slate Dark
+  static const Color textLight = Color(0xFF64748B); // Slate Light
+  static const Color accentBlue = Color(0xFFEFF6FF); // Soft blue indicator tint
+  static const Color accentGreen = Color(0xFFECFDF5); // Soft green indicator tint
+  static const Color buttonDark = Color(0xFF09090B); // Matte black button
 }
 
 class AppTheme {
@@ -76,7 +77,7 @@ class PremiumCardDecoration {
   static BoxDecoration get gradientHeader {
     return const BoxDecoration(
       gradient: LinearGradient(
-        colors: AppColors.orangeGradient,
+        colors: AppColors.primaryGradient,
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),

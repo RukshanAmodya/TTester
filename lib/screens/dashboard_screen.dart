@@ -111,7 +111,7 @@ class DashboardScreen extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
-                                color: AppColors.accentOrange,
+                                color: AppColors.accentBlue,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Text(
@@ -211,7 +211,7 @@ class DashboardScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: hasCheckedIn
                               ? AppColors.primary
-                              : (isCurrentDay ? AppColors.accentOrange : Colors.grey.shade100),
+                              : (isCurrentDay ? AppColors.accentBlue : Colors.grey.shade100),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color: isCurrentDay ? AppColors.primary : Colors.transparent,

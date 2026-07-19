@@ -104,7 +104,7 @@ class CoinStoreScreen extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: AppColors.accentOrange,
+                                  color: AppColors.accentBlue,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(

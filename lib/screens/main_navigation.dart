@@ -67,7 +67,7 @@ class _MainNavigationState extends State<MainNavigation> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.accentOrange : Colors.transparent,
+          color: isSelected ? AppColors.accentBlue : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(

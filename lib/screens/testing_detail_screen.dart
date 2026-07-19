@@ -226,7 +226,7 @@ class _TestingDetailScreenState extends State<TestingDetailScreen> {
                     decoration: BoxDecoration(
                       color: isChecked
                           ? Colors.green
-                          : (isCurrentActiveDay ? AppColors.accentOrange : Colors.grey.shade100),
+                          : (isCurrentActiveDay ? AppColors.accentBlue : Colors.grey.shade100),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: isCurrentActiveDay ? AppColors.primary : Colors.transparent,

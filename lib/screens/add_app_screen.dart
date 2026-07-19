@@ -59,7 +59,7 @@ class _AddAppScreenState extends State<AddAppScreen> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: hasEnoughCoins ? AppColors.accentOrange : Colors.red.shade50,
+                        color: hasEnoughCoins ? AppColors.accentBlue : Colors.red.shade50,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
                           color: hasEnoughCoins ? AppColors.primary.withOpacity(0.3) : Colors.red.withOpacity(0.3),

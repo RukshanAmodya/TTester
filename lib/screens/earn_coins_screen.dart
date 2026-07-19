@@ -127,7 +127,7 @@ class _EarnCoinsScreenState extends State<EarnCoinsScreen> {
                                     height: 60,
                                     decoration: BoxDecoration(
                                       gradient: const LinearGradient(
-                                        colors: AppColors.orangeGradient,
+                                        colors: AppColors.primaryGradient,
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                       ),

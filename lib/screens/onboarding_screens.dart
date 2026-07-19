@@ -204,21 +204,10 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          // 2. High-contrast dark gradient overlay to make all white components stand out
+          // 2. Original bright view with no dark overlay shade
           Positioned.fill(
             child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.45),
-                    Colors.black.withOpacity(0.75),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0.0, 0.5, 1.0],
-                ),
-              ),
+              color: Colors.transparent,
             ),
           ),
           // 3. Login UI Content

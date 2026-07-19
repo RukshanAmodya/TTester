@@ -13,161 +13,165 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  final List<Map<String, String>> _slideContents = [
+    {
+      "title": "Track Smarter.\nPlan Calmer.",
+      "subtitle": "Mutual peer-to-peer Play Store testing network. Share tests and unlock your production releases easily.",
+    },
+    {
+      "title": "Your Full Testing\nProgress, At A Glance",
+      "subtitle": "Track your recruited testers daily compliance and watch your testing clock tick down.",
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: const ClampingScrollPhysics(),
+      body: Stack(
         children: [
-          // Onboard Page 1
-          NumiOnboardPage(
-            backgroundImagePath: 'assets/images/Onboardscreen1.jpg',
-            title: "Track Smarter.\nPlan Calmer.",
-            subtitle: "Mutual peer-to-peer Play Store testing network. Share tests and unlock your production releases easily.",
-            buttonText: "Next",
-            onButtonPressed: () {
-              _pageController.nextPage(
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeInOut,
-              );
-            },
-            showIndicators: true,
-            activeIndicatorIndex: 0,
-          ),
-          // Onboard Page 2
-          NumiOnboardPage(
-            backgroundImagePath: 'assets/images/onboardscreen2.jpg',
-            title: "Your Full Testing\nProgress, At A Glance",
-            subtitle: "Track your recruited testers daily compliance and watch your testing clock tick down.",
-            buttonText: "Continue",
-            onButtonPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NumiLoginScreen()),
-              );
-            },
-            showIndicators: true,
-            activeIndicatorIndex: 1,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class NumiOnboardPage extends StatelessWidget {
-  final String backgroundImagePath;
-  final String title;
-  final String subtitle;
-  final String buttonText;
-  final VoidCallback onButtonPressed;
-  final bool showIndicators;
-  final int activeIndicatorIndex;
-
-  const NumiOnboardPage({
-    super.key,
-    required this.backgroundImagePath,
-    required this.title,
-    required this.subtitle,
-    required this.buttonText,
-    required this.onButtonPressed,
-    required this.showIndicators,
-    required this.activeIndicatorIndex,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(backgroundImagePath),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(flex: 7),
-            // Text Content
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Column(
-                children: [
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 28,
-                      height: 1.25,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0F172A),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    subtitle,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      height: 1.5,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Spacer(flex: 1),
-            // Indicators
-            if (showIndicators)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: activeIndicatorIndex == 0 ? const Color(0xFF0F172A) : Colors.grey.shade300,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Container(
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: activeIndicatorIndex == 1 ? const Color(0xFF0F172A) : Colors.grey.shade300,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ],
-              ),
-            const Spacer(flex: 1),
-            // Button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF09090B), // Black
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 18),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  onPressed: onButtonPressed,
-                  child: Text(
-                    buttonText,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          // 1. Background image with smooth crossfade switcher
+          Positioned.fill(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 600),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              child: Container(
+                key: ValueKey<int>(_currentPage),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(_currentPage == 0
+                        ? 'assets/images/Onboardscreen1.jpg'
+                        : 'assets/images/onboardscreen2.jpg'),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          // 2. Soft vignette overlay at the bottom to ensure high white text contrast
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.0),
+                    Colors.black.withOpacity(0.1),
+                    Colors.black.withOpacity(0.4),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [0.0, 0.5, 1.0],
+                ),
+              ),
+            ),
+          ),
+          // 3. Foreground PageView for text sliding only
+          SafeArea(
+            child: Column(
+              children: [
+                const Spacer(flex: 7),
+                // Text sliding layer
+                Expanded(
+                  flex: 3,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: (int page) {
+                      setState(() {
+                        _currentPage = page;
+                      });
+                    },
+                    itemCount: _slideContents.length,
+                    itemBuilder: (context, index) {
+                      final slide = _slideContents[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              slide["title"]!,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 28,
+                                height: 1.25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              slide["subtitle"]!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                height: 1.5,
+                                color: Colors.white.withOpacity(0.85),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                // Indicators
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    _slideContents.length,
+                    (index) => Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: _currentPage == index ? Colors.white : Colors.white.withOpacity(0.35),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(flex: 1),
+                // Bottom Button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF0F172A),
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (_currentPage < _slideContents.length - 1) {
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeInOut,
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const NumiLoginScreen()),
+                          );
+                        }
+                      },
+                      child: Text(
+                        _currentPage == 0 ? "Next" : "Continue",
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

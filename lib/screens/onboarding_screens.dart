@@ -302,6 +302,7 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
                               return;
                             }
                             appState.loginWithGoogle();
+                            Navigator.pop(context);
                           },
                           child: const Text(
                             "Sign up",
@@ -336,6 +337,7 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
                                 return;
                               }
                               appState.loginWithGoogle();
+                              Navigator.pop(context);
                             },
                           ),
                           const SizedBox(width: 20),
@@ -352,6 +354,7 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
                                 return;
                               }
                               appState.loginWithGoogle();
+                              Navigator.pop(context);
                             },
                           ),
                           const SizedBox(width: 20),
@@ -368,6 +371,7 @@ class _NumiLoginScreenState extends State<NumiLoginScreen> {
                                 return;
                               }
                               appState.loginWithGoogle();
+                              Navigator.pop(context);
                             },
                           ),
                         ],

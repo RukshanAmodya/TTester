@@ -97,7 +97,7 @@ class AppState extends ChangeNotifier {
 
   // Filter lists
   List<AppModel> get availableApps => _allApps
-      .where((app) => app.developerEmail != _userEmail && app.status == 'Recruiting')
+      .where((app) => app.developerEmail != _userEmail && app.status == 'Recruiting' && !app.isJoinedByCurrentUser)
       .toList();
 
   List<AppModel> get myTestingApps => _allApps
@@ -179,14 +179,14 @@ class AppState extends ChangeNotifier {
     _isLoggedIn = true;
     _userName = "Willie Schulist";
     _userEmail = "current_user@gmail.com";
-    _coins = 50; // Welcome bonus
+    _coins = 150; // Welcome bonus
     _dailyStreak = 1;
     _attendanceList[0] = true;
     _lastCheckIn = DateTime.now();
 
     _transactions.add(CoinTransaction(
       title: "Welcome Bonus",
-      coins: 50,
+      coins: 150,
       date: DateTime.now(),
       isCredit: true,
     ));

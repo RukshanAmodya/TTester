@@ -14,7 +14,7 @@ void main() {
       final state = AppState();
       state.loginWithGoogle();
       expect(state.isLoggedIn, true);
-      expect(state.coins, 50);
+      expect(state.coins, 150);
       expect(state.userName, "Willie Schulist");
     });
 

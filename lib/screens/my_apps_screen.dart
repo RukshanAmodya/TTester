@@ -4,6 +4,7 @@ import '../app_state.dart';
 import '../theme.dart';
 import 'add_app_screen.dart';
 import 'app_analytics_screen.dart';
+import '../widgets/premium_widgets.dart';
 
 class MyAppsScreen extends StatelessWidget {
   const MyAppsScreen({super.key});
@@ -200,6 +201,7 @@ class MyAppsScreen extends StatelessWidget {
                                           ),
                                           onPressed: () {
                                             appState.simulateTesterJoining(app.id);
+                                            PremiumToast.show(context, "12 Testers recruited! Testing started.");
                                           },
                                           child: const Text("Simulate 12 Testers Joined", style: TextStyle(fontSize: 10, color: Colors.white)),
                                         ),
@@ -213,6 +215,7 @@ class MyAppsScreen extends StatelessWidget {
                                           ),
                                           onPressed: () {
                                             appState.simulateTestingDays(app.id);
+                                            PremiumToast.show(context, "Advanced simulation calendar by +1 day.");
                                           },
                                           child: const Text("Simulate +1 Day Progress", style: TextStyle(fontSize: 10, color: Colors.white)),
                                         ),
@@ -225,12 +228,7 @@ class MyAppsScreen extends StatelessWidget {
                                           ),
                                           onPressed: () {
                                             appState.simulateTesterLeaving(app.id);
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                content: Text("A tester left! Status changed to Recruiting (Paused)."),
-                                                backgroundColor: Colors.red,
-                                              ),
-                                            );
+                                            PremiumToast.show(context, "A tester left! Status changed to Recruiting (Paused).", isWarning: true);
                                           },
                                           child: const Text("Simulate Tester Leaving (Pause)", style: TextStyle(fontSize: 10, color: Colors.white)),
                                         ),

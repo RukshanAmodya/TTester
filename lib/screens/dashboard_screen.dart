@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../app_state.dart';
 import '../theme.dart';
 import 'coin_store_screen.dart';
+import '../widgets/premium_widgets.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -251,19 +252,9 @@ class DashboardScreen extends StatelessWidget {
                         onPressed: () {
                           final success = appState.checkInDaily();
                           if (success) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Check-in successful! +5 Coins"),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
+                            PremiumToast.show(context, "Check-in successful! +5 Coins");
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("You already checked in today!"),
-                                backgroundColor: Colors.amber,
-                              ),
-                            );
+                            PremiumToast.show(context, "You already checked in today!", isWarning: true);
                           }
                         },
                         child: const Text(
@@ -292,13 +283,14 @@ class DashboardScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(20),
                       decoration: PremiumCardDecoration.outlineCard,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(Icons.download_rounded, color: Colors.blue, size: 28),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 8),
                           Text(
                             "${appState.myTestingApps.length}",
                             style: const TextStyle(
@@ -307,8 +299,10 @@ class DashboardScreen extends StatelessWidget {
                               color: AppColors.textDark,
                             ),
                           ),
+                          const SizedBox(height: 4),
                           const Text(
                             "Apps Testing",
+                            textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 12, color: AppColors.textLight),
                           ),
                         ],
@@ -318,13 +312,14 @@ class DashboardScreen extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(20),
                       decoration: PremiumCardDecoration.outlineCard,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(Icons.code_rounded, color: Colors.green, size: 28),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 8),
                           Text(
                             "${appState.myDeveloperApps.length}",
                             style: const TextStyle(
@@ -333,8 +328,10 @@ class DashboardScreen extends StatelessWidget {
                               color: AppColors.textDark,
                             ),
                           ),
+                          const SizedBox(height: 4),
                           const Text(
                             "My Apps Listed",
+                            textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 12, color: AppColors.textLight),
                           ),
                         ],

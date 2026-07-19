@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../app_state.dart';
 import '../theme.dart';
+import '../widgets/premium_widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -22,86 +23,113 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
         child: Column(
           children: [
-            // Profile Card Info
+            // Modern Profile Header Card
             Container(
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-              child: Row(
+              padding: const EdgeInsets.all(24),
+              decoration: PremiumCardDecoration.outlineCard,
+              child: Column(
                 children: [
-                  Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: AppColors.accentBlue,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.primary, width: 2),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      appState.userName.substring(0, 1).toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          appState.userName,
+                  Row(
+                    children: [
+                      Container(
+                        width: 76,
+                        height: 76,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: AppColors.primaryGradient,
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withOpacity(0.2),
+                              blurRadius: 12,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          appState.userName.substring(0, 1).toUpperCase(),
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textDark,
+                            color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          appState.userEmail,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: AppColors.textLight,
-                          ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              appState.userName,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textDark,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              appState.userEmail,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textLight,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                  const SizedBox(height: 20),
+                  // User Stats row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildHeaderStat("🪙 Balance", "${appState.coins}"),
+                      _buildHeaderStat("🔥 Streak", "${appState.dailyStreak}d"),
+                      _buildHeaderStat("📱 Tested", "${appState.myTestingApps.length}"),
+                    ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             // Transaction History
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(20),
               decoration: PremiumCardDecoration.outlineCard,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "Transaction History",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textDark,
                         ),
                       ),
-                      const Icon(Icons.history, color: AppColors.primary, size: 20),
+                      Icon(Icons.receipt_long_rounded, color: AppColors.primary, size: 20),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   if (history.isEmpty)
                     const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.0),
+                      padding: EdgeInsets.symmetric(vertical: 24.0),
                       child: Center(
                         child: Text(
                           "No transactions recorded yet.",
@@ -113,58 +141,54 @@ class ProfileScreen extends StatelessWidget {
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: history.length,
-                      separatorBuilder: (context, index) => const Divider(height: 1),
+                      itemCount: history.length > 5 ? 5 : history.length, // Show top 5
+                      separatorBuilder: (context, index) => const Divider(height: 24, color: Color(0xFFF1F5F9)),
                       itemBuilder: (context, index) {
                         final tx = history[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      tx.title,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.textDark,
-                                      ),
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    tx.title,
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textDark,
                                     ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      "${tx.date.hour}:${tx.date.minute.toString().padLeft(2, '0')} • ${tx.date.day}/${tx.date.month}/${tx.date.year}",
-                                      style: const TextStyle(
-                                        fontSize: 11,
-                                        color: AppColors.textLight,
-                                      ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    "${tx.date.day}/${tx.date.month}/${tx.date.year} • ${tx.date.hour}:${tx.date.minute.toString().padLeft(2, '0')}",
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.textLight,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "${tx.isCredit ? '+' : '-'}${tx.coins} Coins",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: tx.isCredit ? Colors.green : Colors.red,
-                                ),
+                            ),
+                            Text(
+                              "${tx.isCredit ? '+' : '-'}${tx.coins} Coins",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: tx.isCredit ? const Color(0xFF10B981) : const Color(0xFFEF4444),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         );
                       },
                     ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
-            // Menu Items
+            const SizedBox(height: 20),
+            // Menu Settings
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
               decoration: PremiumCardDecoration.outlineCard,
               child: Column(
                 children: [
@@ -173,81 +197,82 @@ class ProfileScreen extends StatelessWidget {
                     title: const Text("Privacy Policy", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                     trailing: const Icon(Icons.chevron_right, color: AppColors.textLight),
                     onTap: () {
-                      _showPolicyDialog(context);
+                      PremiumDialog.show(
+                        context,
+                        title: "Privacy & Rules",
+                        icon: Icons.privacy_tip_outlined,
+                        message: "TTesters values your privacy. We verify device app packages in the background solely to check testing compliance and never harvest user data. Bad behavior or spam comments on Play Store leads to immediate account ban.",
+                      );
                     },
                   ),
-                  const Divider(height: 1),
+                  const Divider(height: 1, color: Color(0xFFF1F5F9)),
                   ListTile(
                     leading: const Icon(Icons.support_agent_outlined, color: AppColors.textDark),
                     title: const Text("Support & Contact Us", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                     trailing: const Icon(Icons.chevron_right, color: AppColors.textLight),
                     onTap: () {
-                      _showSupportDialog(context);
+                      PremiumDialog.show(
+                        context,
+                        title: "Support Desk",
+                        icon: Icons.support_agent_outlined,
+                        message: "Facing package verification bugs or coin check-in issues? Reach out to support@questrax.com or text Telegram @QuestraxSupport.",
+                      );
                     },
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            // Logout Button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red.shade600,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            const SizedBox(height: 28),
+            // Logout button styled as Numi pill
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF09090B), // Black
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  onPressed: () {
-                    appState.logout();
-                  },
-                  child: const Text("Logout"),
+                ),
+                onPressed: () {
+                  appState.logout();
+                  PremiumToast.show(context, "Logged out successfully");
+                },
+                child: const Text(
+                  "Logout",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ),
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 32),
           ],
         ),
       ),
     );
   }
 
-  void _showPolicyDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Privacy & Rules"),
-        content: const SingleChildScrollView(
-          child: Text(
-            "TTesters values your privacy. We verify device app packages in the background solely to check testing statuses, and never collect personal data. Developers must not publish spam reviews on the Play Store. Any bad behavior will lead to a permanent coin/account ban.",
+  Widget _buildHeaderStat(String label, String value) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textDark,
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Close"),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 11,
+            color: AppColors.textLight,
+            fontWeight: FontWeight.w500,
           ),
-        ],
-      ),
-    );
-  }
-
-  void _showSupportDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Support Center"),
-        content: const Text(
-          "Having trouble with check-ins or need a coin purchase inquiry? Contact us at support@questrax.com or chat on Telegram @QuestraxSupport.",
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Got it"),
-          ),
-        ],
-      ),
+      ],
     );
   }
 }

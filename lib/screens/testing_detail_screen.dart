@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../app_state.dart';
 import '../theme.dart';
+import '../widgets/premium_widgets.dart';
 
 class TestingDetailScreen extends StatefulWidget {
   final String appId;
@@ -117,15 +118,11 @@ class _TestingDetailScreenState extends State<TestingDetailScreen> {
                 ),
                 onPressed: () {
                   // Simulate opening URL
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text("Launching Play Store"),
-                      content: Text("Redirecting you to play console testing channel: \n\n${app.playStoreLink}"),
-                      actions: [
-                        TextButton(onPressed: () => Navigator.pop(context), child: const Text("OK")),
-                      ],
-                    ),
+                  PremiumDialog.show(
+                    context,
+                    title: "Launching Play Store",
+                    icon: Icons.open_in_new_rounded,
+                    message: "Redirecting you to play console testing channel: \n\n${app.playStoreLink}",
                   );
                 },
                 icon: const Icon(Icons.open_in_new_rounded),
@@ -178,20 +175,10 @@ class _TestingDetailScreenState extends State<TestingDetailScreen> {
                               
                               final success = appState.verifyAndCheckInApp(app.id);
                               if (success) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Package verified successfully! Checked-in and rewarded 🪙 5 coins for testing ${app.name} today."),
-                                    backgroundColor: Colors.green,
-                                  ),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Verify failed. Either package not found, or you already checked in today."),
-                                    backgroundColor: Colors.orange,
-                                  ),
-                                );
-                              }
+                                 PremiumToast.show(context, "Package verified successfully! Checked-in and rewarded 🪙 5 coins for testing ${app.name} today.");
+                               } else {
+                                 PremiumToast.show(context, "Verify failed. Either package not found, or you already checked in today.", isWarning: true);
+                               }
                             },
                             child: const Text("Verify & Check-in"),
                           ),
@@ -286,12 +273,7 @@ class _TestingDetailScreenState extends State<TestingDetailScreen> {
                   if (_bugController.text.trim().isEmpty) return;
                   appState.submitBugReport(app.id, _bugController.text.trim());
                   _bugController.clear();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Feedback submitted successfully. Thank you!"),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
+                  PremiumToast.show(context, "Feedback submitted successfully. Thank you!");
                 },
                 child: const Text("Submit Report"),
               ),

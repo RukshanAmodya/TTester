@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../app_state.dart';
 import '../theme.dart';
+import '../widgets/premium_widgets.dart';
 
 class AddAppScreen extends StatefulWidget {
   const AddAppScreen({super.key});
@@ -209,12 +210,7 @@ class _AddAppScreenState extends State<AddAppScreen> {
                               _descController.text.trim(),
                             );
                             if (success) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("App registered successfully! Recruiting testers now..."),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
+                              PremiumToast.show(context, "App registered successfully! Recruiting testers now...");
                               Navigator.pop(context);
                             }
                           }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../app_state.dart';
 import '../theme.dart';
+import '../widgets/premium_widgets.dart';
 
 class CoinStoreScreen extends StatelessWidget {
   const CoinStoreScreen({super.key});
@@ -206,12 +207,7 @@ class CoinStoreScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                   state.buyCoins(coins, price);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("Payment successful! Added 🪙 $coins Coins to your wallet."),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
+                  PremiumToast.show(context, "Payment successful! Added 🪙 $coins Coins to your wallet.");
                 },
                 child: const Text("Pay & Credit Coins"),
               ),

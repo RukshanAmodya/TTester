@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../app_state.dart';
 import '../theme.dart';
 import 'testing_detail_screen.dart';
+import '../widgets/premium_widgets.dart';
 
 class EarnCoinsScreen extends StatefulWidget {
   const EarnCoinsScreen({super.key});
@@ -194,12 +195,7 @@ class _EarnCoinsScreenState extends State<EarnCoinsScreen> {
                                               ),
                                               onPressed: () {
                                                 appState.joinTest(app.id);
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                  SnackBar(
-                                                    content: Text("Joined test group for ${app.name}! Redirecting to detail page..."),
-                                                    backgroundColor: Colors.green,
-                                                  ),
-                                                );
+                                                PremiumToast.show(context, "Joined test group for ${app.name}! Redirecting to detail page...");
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
